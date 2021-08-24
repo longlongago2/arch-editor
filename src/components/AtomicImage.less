@@ -1,0 +1,118 @@
+@import '~theme';
+
+@default-image-width: 280px;
+
+.atomic-image-container {
+  display: inline-block;
+}
+.atomic-image {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  transition: box-shadow 0.3s ease;
+
+  &.active {
+    min-width: @default-image-width;
+  }
+
+  &.active,
+  &:hover {
+    outline: 1px solid @border-color;
+    box-shadow: @box-shadow;
+    .image-toolbar {
+      border-top: 1px solid @border-color;
+    }
+  }
+
+  > img {
+    display: block;
+    font-size: 12px;
+    transition: all 0.3s ease;
+  }
+
+  .default-image {
+    width: @default-image-width;
+    height: auto;
+  }
+
+  .image-toolbar {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    .row {
+      display: flex;
+      width: 100%;
+      padding: 5px 0;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+      color: #666;
+      .col {
+        display: inline-block;
+      }
+      .col + .col {
+        margin-left: 15px;
+      }
+      .common-input() {
+        border: 1px solid @border-color;
+        line-height: 25px;
+        text-indent: 5px;
+        outline: none;
+        background-color: transparent;
+        box-sizing: border-box;
+        &:focus {
+          border-color: @primary-color;
+        }
+      }
+      .input-number {
+        display: inline-block;
+        width: 65px;
+        .common-input();
+      }
+      .input-text {
+        display: inline-block;
+        width: 190px;
+        .common-input();
+      }
+      .input-button {
+        display: inline-block;
+        width: 190px;
+        color: #999;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        transition: border-color 0.3s ease;
+        .common-input();
+        &:hover {
+          border-color: @primary-color;
+        }
+      }
+      .radio-button {
+        display: inline-block;
+        > input[type='radio'] {
+          display: none;
+          &:checked {
+            & + span {
+              background-color: @primary-color;
+              color: #fff;
+            }
+          }
+        }
+        > span {
+          display: inline-block;
+          font-size: 12px;
+          line-height: 1;
+          padding: 7px 5px;
+          border: 1px solid @primary-color;
+        }
+      }
+      .radio-button + .radio-button {
+        > span {
+          border-left-color: transparent;
+          margin-left: -1px;
+        }
+      }
+    }
+  }
+}

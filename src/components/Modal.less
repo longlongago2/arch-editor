@@ -1,0 +1,29 @@
+@import '~theme';
+
+.modal-body {
+  position: absolute;
+  min-width: 450px;
+  min-height: 180px;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  border-radius: 7px 7px 10px 10px;
+  box-sizing: border-box;
+  box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.07);
+  border-top: 7px solid @primary-color;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.55);
+  overflow: auto;
+  z-index: 9999;
+}
+
+.react-modal-body-open {
+  overflow: hidden;
+}

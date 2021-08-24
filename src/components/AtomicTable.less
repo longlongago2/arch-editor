@@ -1,0 +1,80 @@
+@import '~theme';
+@table-border-color: #434343;
+@table-bar-border-color: #bfbfbf;
+
+.table-bar-hover {
+  border: 1px solid #1890ff !important;
+  background-color: #91d5ff;
+}
+
+.atomic-table {
+  display: inline-block;
+
+  table {
+    border: 0;
+    border-spacing: 0;
+    border-collapse: separate;
+    outline: none;
+    &.readonly {
+      transition: all 0.3s ease;
+      border-right: 1px solid @table-border-color;
+      border-top: 1px solid @table-border-color;
+      &:hover {
+        box-shadow: @box-shadow;
+      }
+    }
+    tbody {
+      tr {
+        display: table-row;
+      }
+      td {
+        display: table-cell;
+        border-left: 1px solid @table-border-color;
+        border-bottom: 1px solid @table-border-color;
+        box-sizing: border-box;
+        :global(.DraftEditor-root) {
+          min-width: 90px;
+          min-height: 40px;
+        }
+      }
+      .column-bar {
+        height: 15px;
+        background-color: #f0f0f0;
+        td {
+          padding: 0;
+          border-top-width: 1px;
+          border-top-style: solid;
+          border-color: @table-bar-border-color;
+          border-bottom-color: @table-border-color;
+          transition: all 0.3s ease;
+          &.last {
+            border-right: 0;
+            border-top: 0;
+            border-bottom-color: @table-bar-border-color;
+            background-color: #fff;
+            pointer-events: none;
+          }
+          &:hover {
+            .table-bar-hover();
+          }
+        }
+      }
+      .row-bar {
+        width: 15px;
+        padding: 0;
+        border-color: @table-bar-border-color;
+        border-right: 1px solid @table-bar-border-color;
+        border-left: 1px solid @table-border-color;
+        background-color: #f0f0f0;
+        transition: all 0.3s ease;
+        &:hover {
+          .table-bar-hover();
+        }
+      }
+    }
+  }
+
+  .edit-toolbar {
+    padding-right: 14px;
+  }
+}

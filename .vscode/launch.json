@@ -1,0 +1,29 @@
+{
+  // 欲了解更多信息，请访问: https://create-react-app.dev/docs/setting-up-your-editor#visual-studio-code
+  // 通过运行 npm start 启动您的应用程序，然后按 F5 或单击绿色调试图标在 VS Code 中开始调试。
+  // 您现在可以编写代码、设置断点、更改代码以及调试新修改的代码——所有这些都可以在您的编辑器中完成。
+  // IMP: 如果您通过 HOST 或 PORT 环境变量进行了调整，则 URL 可能会有所不同。
+  "version": "0.2.0",
+  "configurations": [
+  {
+    "type": "node",
+    "request": "launch",
+    "name": "scripts-build.js-dev",
+    "program": "${workspaceFolder}/scripts/build.js",
+    "skipFiles": [
+      "<node_internals>/**"
+    ],
+    "console": "integratedTerminal"
+  },
+    {
+      "name": "ArchEditor-Dev",
+      "type": "pwa-chrome",
+      "request": "launch",
+      "url": "http://localhost:9000",
+      "webRoot": "${workspaceFolder}/src",
+      "sourceMapPathOverrides": {
+        "webpack:///src/*": "${webRoot}/*"
+      }
+    }
+  ]
+}

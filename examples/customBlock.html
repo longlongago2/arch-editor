@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Load ArchEditor css -->
+    <!-- <link rel="stylesheet" type="text/css" href="/dist/index.css" /> -->
+    <title>customBlock</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!-- Load React. -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <!-- Load Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Load ArchEditor -->
+    <!-- <script src="/dist/index.min.js"></script> -->
+    <!-- Es6 Script -->
+    <script type="text/babel">
+      function App() {
+        return (
+          <div>
+            CustomBlock atomic
+          </div>
+        );
+      }
+      const root = document.querySelector('#root');
+      ReactDOM.render(React.createElement(App), root);
+    </script>
+  </body>
+</html>

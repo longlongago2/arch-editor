@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- load hightlight css -->
+    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.2.0/styles/default.min.css" />
+    <!-- load arch-editor css -->
+    <link rel="stylesheet" href="https://unpkg.com/arch-editor@1.0.1-beta.1/dist/arch-editor.css" />
+    <title>Example</title>
+    <style>
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes shake {
+        0% {
+          transform: rotate(-45deg);
+        }
+
+        10% {
+          transform: rotate(0deg);
+        }
+
+        90% {
+          transform: rotate(0deg);
+        }
+
+        100% {
+          transform: rotate(45deg);
+        }
+      }
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: auto;
+        background-color: #20232a;
+        font-size: 14px;
+      }
+      section a {
+        background-color: rgba(187, 239, 253, 0.3);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        color: #1a1a1a;
+        text-decoration: none;
+      }
+      section a:hover {
+        background-color: rgba(187, 239, 253, 1);
+        border-bottom-color: rgba(117, 56, 56, 0.8);
+      }
+      pre code {
+        font-family: Consolas, 'Courier New', monospace, sans-serif;
+      }
+      .header {
+        position: relative;
+        text-align: center;
+        color: #61dafb;
+        overflow: hidden;
+        padding: 20px 0;
+      }
+      .header a {
+        color: #61dafb;
+        text-decoration: none;
+      }
+      .header a:hover {
+        color: #5fb0eb;
+      }
+      .header::after {
+        content: '';
+        width: 500px;
+        height: 250px;
+        position: absolute;
+        right: 0;
+        bottom: -100px;
+        background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xMS41IC0xMC4yMzE3NCAyMyAyMC40NjM0OCI+CiAgPHRpdGxlPlJlYWN0IExvZ288L3RpdGxlPgogIDxjaXJjbGUgY3g9IjAiIGN5PSIwIiByPSIyLjA1IiBmaWxsPSIjZmZmIi8+CiAgPGcgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIi8+CiAgICA8ZWxsaXBzZSByeD0iMTEiIHJ5PSI0LjIiIHRyYW5zZm9ybT0icm90YXRlKDYwKSIvPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIiB0cmFuc2Zvcm09InJvdGF0ZSgxMjApIi8+CiAgPC9nPgo8L3N2Zz4K)
+          no-repeat center;
+        opacity: 0.35;
+        animation: 4s linear 0s infinite alternate spin;
+      }
+      .header::before {
+        content: '';
+        width: 100px;
+        height: 80px;
+        position: absolute;
+        top: 50px;
+        right: 50px;
+        background: url(data:image/png;base64,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)
+          no-repeat center;
+        background-size: 100px auto;
+        opacity: 0.35;
+        animation: 4s ease 0s infinite alternate shake;
+      }
+      .content {
+        padding: 20px;
+        text-align: left;
+        background-color: #fff;
+      }
+      /* .content label {
+        background-color: rgb(244, 245, 247);
+        color: rgb(23, 43, 77);
+        border-radius: 3px;
+        padding: 4px 10px;
+        font-size: 14px;
+      } */
+      .content .ordered-list > li {
+        margin: 7px 0;
+      }
+      .content .arch-editor {
+        width: 100%;
+        min-height: 150px;
+        border: 1px solid #f0f0f0;
+        padding: 15px;
+      }
+      .footer {
+        color: #61dafb;
+        text-align: center;
+        padding: 30px 20px;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!-- Load React. -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <!-- Load Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- load hightlight.js -->
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.2.0/highlight.min.js"></script>
+    <!-- load arch-editor -->
+    <script src="https://unpkg.com/arch-editor@1.0.1-beta.1/dist/arch-editor.js"></script>
+    <!-- Es6 Script -->
+    <script type="text/babel">
+      const { useLayoutEffect } = React;
+      const { ArchEditor: Editor, ArchEditorProvider, BlockToolbar } = ArchEditor;
+      console.log(ArchEditor);
+      function App() {
+        useLayoutEffect(() => {
+          window.hljs.highlightAll();
+        }, []);
+        return (
+          <div>
+            <div className="header">
+              <h1 style={{ fontSize: 50 }}>ArchEditor</h1>
+              <p style={{ color: '#f0f0f0', fontSize: 17, paddingBottom: 20 }}>
+                The rich text editor is based on{' '}
+                <a href="https://draftjs.org/" target="_blank">
+                  draft.js
+                  <svg
+                    width="13.5"
+                    height="13.5"
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    style={{ marginLeft: 5 }}
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"
+                    ></path>
+                  </svg>
+                </a>
+                , so it only works on react.
+              </p>
+              <p>
+                <a href="https://github.com/nadbm/arch-editor">View on Github</a>
+              </p>
+            </div>
+            <div className="content">
+              <div style={{ padding: 20 }}>
+                <ArchEditorProvider>
+                  <BlockToolbar />
+                  <Editor placeholder="请输入文本" className="arch-editor" />
+                </ArchEditorProvider>
+              </div>
+              <section>
+                <h2>Usage</h2>
+                <section style={{ paddingLeft: 15 }}>
+                  <h4>NPM</h4>
+                  <pre>
+                    <code>npm install --save arch-editor</code>
+                  </pre>
+                  <h4>CDN</h4>
+                  <a href="https://unpkg.com/browse/@atlaskit/code@14.1.3/dist/">unpkg.com</a>
+                  <h4>Code</h4>
+                  <pre>
+                    <code>
+                      {`
+import React form 'react';
+import ReactDOM from 'react-dom';
+import { ArchEditor } from 'arch-editor';
+
+  function App() {
+    return (
+      <ArchEditor placeholder="please input" />
+    );
+  }
+
+ReactDOM.render(<App />, document.getElementById('root'));
+                        `}
+                    </code>
+                  </pre>
+                </section>
+              </section>
+              <section>
+                <h2>Documention</h2>
+                <section style={{ paddingLeft: 15 }}>
+                  ArchEditor documention is <a href="#">here</a>
+                </section>
+              </section>
+              <section>
+                <h2>Examples</h2>
+                <ol className="ordered-list">
+                  <li>
+                    <a href="./basic.html">Basic</a>
+                  </li>
+                  <li>
+                    <a href="./use-editorState.html">Use EditorState</a>
+                  </li>
+                  <li>
+                    <a href="./use-provider.html">Use Provider</a>
+                  </li>
+                  <li>
+                    <a href="./customBlock.html">CustomBlock</a>
+                  </li>
+                </ol>
+              </section>
+            </div>
+            <div className="footer">Copyright © 2021 ArchEditor, &nbsp;&nbsp;All rights reserved.</div>
+          </div>
+        );
+      }
+      const root = document.querySelector('#root');
+      ReactDOM.render(React.createElement(App), root);
+    </script>
+  </body>
+</html>

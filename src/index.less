@@ -1,0 +1,112 @@
+@import '~theme';
+
+.container {
+  display: inline-block;
+  width: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  caret-color: @caret-color;
+
+  ::selection {
+    color: #fff;
+    background-color: @selection-color;
+  }
+
+  :global(.DraftEditor-root) {
+    height: inherit;
+    min-height: inherit;
+    max-height: inherit;
+    :global(.DraftEditor-editorContainer) {
+      height: inherit;
+      min-height: inherit;
+      max-height: inherit;
+      :global(.public-DraftEditor-content) {
+        height: inherit;
+        min-height: inherit;
+        max-height: inherit;
+      }
+    }
+  }
+}
+
+.popover-button-group {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 -10px;
+  &.large {
+    .popover-button {
+      font-size: 18px;
+    }
+  }
+  .popover-button {
+    display: inline-block;
+    width: 40px;
+    border: 0;
+    color: #fff;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 1;
+    &:hover {
+      color: #ccc;
+    }
+  }
+  .popover-divider {
+    display: inline-block;
+    margin: 0 5px;
+    border: 0;
+    border-left: 1px solid #ccc;
+    height: 15px;
+    margin: 0 5px 0 4px;
+  }
+}
+
+.edit-toolbar {
+  display: block;
+  text-align: right;
+  padding-top: 5px;
+  box-sizing: border-box;
+  > button {
+    border: 1px solid @primary-color;
+    line-height: 1;
+    font-size: 14px;
+    padding: 5px 10px;
+    color: @primary-color;
+    margin-left: 5px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+    &:hover {
+      background-color: @primary-color;
+      color: #fff;
+    }
+    &.danger {
+      border-color: @danger-color;
+      color: @danger-color;
+      &:hover {
+        background-color: @danger-color;
+        color: #fff;
+      }
+    }
+  }
+}
+
+// css animation
+:global(.ArchEditor-fade-enter) {
+  opacity: 0;
+  transform: scale(0);
+}
+:global(.ArchEditor-fade-enter-active) {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 250ms ease, transform 250ms ease;
+}
+:global(.ArchEditor-fade-exit) {
+  opacity: 1;
+  transform: scale(1);
+}
+:global(.ArchEditor-fade-exit-active) {
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 250ms ease, transform 250ms ease;
+}

@@ -1,0 +1,175 @@
+{
+  "name": "arch-editor",
+  "version": "1.0.1-beta.1",
+  "description": "Rich text editor with a high degree of customization.",
+  "main": "lib/index.js",
+  "unpkg": "dist/arch-editor.js",
+  "files": [
+    "dist",
+    "lib",
+    "src",
+    "LICENSE",
+    "README.md",
+    "README.zh.md"
+  ],
+  "directories": {
+    "example": "./examples",
+    "lib": "./lib",
+    "dist": "./dist",
+    "doc": "./docs"
+  },
+  "scripts": {
+    "start": "npm run serve",
+    "serve": "node scripts/serve.js",
+    "build": "node scripts/build.js",
+    "postinstall": "node scripts/postinstall.js",
+    "clean": "rimraf lib dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/nanjingxinghengdata/arch-editor.git"
+  },
+  "keywords": [
+    "react",
+    "rich",
+    "editor",
+    "draft.js",
+    "rich-editor",
+    "arch-editor"
+  ],
+  "author": "longlongago2",
+  "license": "MIT",
+  "prettier": {
+    "printWidth": 110,
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "bracketSpacing": true,
+    "jsxBracketSameLine": false,
+    "arrowParens": "always"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2021": true
+    },
+    "extends": [
+      "plugin:react/recommended",
+      "plugin:react-hooks/recommended",
+      "airbnb"
+    ],
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "ecmaVersion": 12,
+      "sourceType": "module"
+    },
+    "plugins": [
+      "react"
+    ],
+    "rules": {
+      "linebreak-style": "off",
+      "react/no-unused-state": "warn",
+      "react/forbid-prop-types": "off",
+      "react/require-default-props": "off",
+      "react/jsx-filename-extension": "off",
+      "react/jsx-props-no-spreading": "off",
+      "import/no-extraneous-dependencies": "off",
+      "jsx-a11y/click-events-have-key-events": "off",
+      "jsx-a11y/no-noninteractive-element-interactions": "off",
+      "jsx-a11y/no-autofocus": "off",
+      "no-underscore-dangle": "off",
+      "no-unused-vars": "warn",
+      "max-len": "off",
+      "no-unused-expressions": "off",
+      "object-curly-newline": [
+        "warn",
+        {
+          "multiline": true
+        }
+      ],
+      "import/no-unresolved": [
+        "error",
+        {
+          "ignore": [
+            "^@/+"
+          ]
+        }
+      ],
+      "jsx-a11y/label-has-associated-control": [
+        "warn",
+        {
+          "labelComponents": [
+            "CustomLabel"
+          ],
+          "labelAttributes": [
+            "inputLabel"
+          ],
+          "controlComponents": [
+            "CustomInput"
+          ],
+          "assert": "nesting",
+          "depth": 3
+        }
+      ]
+    }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
+  "dependencies": {
+    "@popperjs/core": "^2.9.2",
+    "classnames": "^2.3.1",
+    "draft-js": "^0.11.7",
+    "prop-types": "^15.7.2",
+    "react-katex": "^2.0.2",
+    "react-modal": "^3.14.3",
+    "react-popper": "^2.2.5",
+    "react-transition-group": "^4.4.2",
+    "uuid": "^8.3.2"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-react": "^7.14.5",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
+    "@types/react": "^17.0.16",
+    "babel-loader": "^8.2.2",
+    "copy-webpack-plugin": "^9.0.1",
+    "css-loader": "^5.2.6",
+    "css-minimizer-webpack-plugin": "^3.0.1",
+    "eslint": "^7.29.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-webpack-plugin": "^2.5.4",
+    "fs-extra": "^10.0.0",
+    "html-webpack-plugin": "^5.3.2",
+    "less": "^4.1.1",
+    "less-loader": "^10.0.0",
+    "mini-css-extract-plugin": "^1.6.0",
+    "postcss": "^8.3.5",
+    "postcss-loader": "^6.1.0",
+    "postcss-preset-env": "^6.7.0",
+    "react": "^17.0.2",
+    "react-dev-utils": "^11.0.4",
+    "react-dom": "^17.0.2",
+    "react-refresh": "^0.10.0",
+    "replace-in-file": "^6.2.0",
+    "rimraf": "^3.0.2",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.40.0",
+    "webpack-dev-server": "^3.11.2"
+  }
+}
