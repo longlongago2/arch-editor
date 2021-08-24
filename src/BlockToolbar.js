@@ -34,6 +34,15 @@ const headerStyle = {
   padding: 5,
 };
 
+const listStyle = {
+  display: 'inline-block',
+  lineHeight: 1.2,
+  marginLeft: 20,
+  marginRight: 10,
+  padding: 0,
+  fontSize: 14,
+};
+
 const BlockToolbar = (props) => {
   // props
   const {
@@ -132,7 +141,15 @@ const BlockToolbar = (props) => {
       },
       {
         name: 'OL',
-        tooltip: '有序列表 Ctrl+Alt+O',
+        tooltip: (
+          <>
+            <ol style={listStyle}>
+              <li>-</li>
+              <li>-</li>
+            </ol>
+            <span>Ctrl+Alt+O</span>
+          </>
+        ),
         component: <Icon name="ol" />,
         active: RichUtils.getCurrentBlockType(editorState) === 'ordered-list-item',
         onClick() {
@@ -143,7 +160,15 @@ const BlockToolbar = (props) => {
       },
       {
         name: 'UL',
-        tooltip: '无序列表 Ctrl+Alt+U',
+        tooltip: (
+          <>
+            <ul style={listStyle}>
+              <li>-</li>
+              <li>-</li>
+            </ul>
+            <span>Ctrl+Alt+U</span>
+          </>
+        ),
         component: <Icon name="ul" />,
         active: RichUtils.getCurrentBlockType(editorState) === 'unordered-list-item',
         onClick() {
