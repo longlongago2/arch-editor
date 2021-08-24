@@ -4,6 +4,7 @@
   "description": "Rich text editor with a high degree of customization.",
   "main": "lib/index.js",
   "unpkg": "dist/arch-editor.js",
+  "homepage": "https://longlongago2.github.io/arch-editor/index.html",
   "files": [
     "dist",
     "lib",
@@ -27,7 +28,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://gitee.com/nanjingxinghengdata/arch-editor.git"
+    "url": "https://github.com/longlongago2/arch-editor.git"
   },
   "keywords": [
     "react",

@@ -171,14 +171,14 @@
                 , so it only works on react.
               </p>
               <p>
-                <a href="https://github.com/nadbm/arch-editor">View on Github</a>
+                <a href="https://github.com/longlongago2/arch-editor.git">View on Github</a>
               </p>
             </div>
             <div className="content">
               <div style={{ padding: 20 }}>
                 <ArchEditorProvider>
                   <BlockToolbar />
-                  <Editor placeholder="请输入文本" className="arch-editor" />
+                  <Editor placeholder="Please enter text." className="arch-editor" />
                 </ArchEditorProvider>
               </div>
               <section>
@@ -189,18 +189,33 @@
                     <code>npm install --save arch-editor</code>
                   </pre>
                   <h4>CDN</h4>
-                  <a href="https://unpkg.com/browse/@atlaskit/code@14.1.3/dist/">unpkg.com</a>
+                  <a href="https://unpkg.com/browse/arch-editor@1.0.1-beta.1/dist/" target="_blank">
+                    unpkg.com
+                  </a>
+                  <pre>
+                    <code>
+                      {`<!-- unpkg.com/:package@:version/:file -->
+
+<!-- load arch-editor css -->
+<link rel="stylesheet" href="https://unpkg.com/arch-editor@1.0.1-beta.1/dist/arch-editor.css" />
+<!-- load arch-editor -->
+<script src="https://unpkg.com/arch-editor@1.0.1-beta.1/dist/arch-editor.js" />`}
+                    </code>
+                  </pre>
                   <h4>Code</h4>
                   <pre>
                     <code>
                       {`
 import React form 'react';
 import ReactDOM from 'react-dom';
-import { ArchEditor } from 'arch-editor';
+import { ArchEditor, BlockToolbar, ArchEditorProvider } from 'arch-editor';
 
   function App() {
     return (
-      <ArchEditor placeholder="please input" />
+      <ArchEditorProvider>
+        <BlockToolbar />
+        <ArchEditor placeholder="Please enter text" />
+      </ArchEditorProvider>
     );
   }
 
@@ -213,23 +228,32 @@ ReactDOM.render(<App />, document.getElementById('root'));
               <section>
                 <h2>Documention</h2>
                 <section style={{ paddingLeft: 15 }}>
-                  ArchEditor documention is <a href="#">here</a>
+                  ArchEditor documention is{' '}
+                  <a href="https://github.com/longlongago2/arch-editor/blob/main/README.md">here</a>
                 </section>
               </section>
               <section>
                 <h2>Examples</h2>
                 <ol className="ordered-list">
                   <li>
-                    <a href="./basic.html">Basic</a>
+                    <a href="https://github.com/longlongago2/arch-editor/blob/main/examples/basic.html">
+                      Basic
+                    </a>
                   </li>
                   <li>
-                    <a href="./use-editorState.html">Use EditorState</a>
+                    <a href="https://github.com/longlongago2/arch-editor/blob/main/examples/customBlock.html">
+                      CustomBlock
+                    </a>
                   </li>
                   <li>
-                    <a href="./use-provider.html">Use Provider</a>
+                    <a href="https://github.com/longlongago2/arch-editor/blob/main/examples/editorState.html">
+                      Use editorState
+                    </a>
                   </li>
                   <li>
-                    <a href="./customBlock.html">CustomBlock</a>
+                    <a href="https://github.com/longlongago2/arch-editor/blob/main/examples/provider.html">
+                      Use provider
+                    </a>
                   </li>
                 </ol>
               </section>
