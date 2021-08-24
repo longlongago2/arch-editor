@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 import React, { useRef, useState, useCallback, useMemo } from 'react';
 // dev
-// import { ArchEditor, BlockToolbar, Icon, defaultEditorState, ArchEditorProvider } from './src';
+import { ArchEditor, BlockToolbar, Icon, defaultEditorState, ArchEditorProvider } from './src';
 // prod
-import { ArchEditor, BlockToolbar, Icon, defaultEditorState, ArchEditorProvider } from './lib';
-import './dist/arch-editor.css';
+// import { ArchEditor, BlockToolbar, Icon, defaultEditorState, ArchEditorProvider } from './lib';
+// import './dist/arch-editor.css';
 import styles from './App.less';
 
 function App() {
