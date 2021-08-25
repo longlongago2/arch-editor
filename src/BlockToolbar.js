@@ -189,7 +189,11 @@ const BlockToolbar = (props) => {
             width: 280,
             height: '',
           });
-          const newEditorState = AtomicBlockUtils.insertAtomicBlock(res.editorState, res.entityKey, ' ');
+          const newEditorState = AtomicBlockUtils.insertAtomicBlock(
+            res.editorState,
+            res.entityKey,
+            ' ',
+          );
           if (onChange) onChange(newEditorState);
         },
       },
@@ -239,7 +243,11 @@ const BlockToolbar = (props) => {
               },
             ],
           });
-          const newEditorState = AtomicBlockUtils.insertAtomicBlock(res.editorState, res.entityKey, ' ');
+          const newEditorState = AtomicBlockUtils.insertAtomicBlock(
+            res.editorState,
+            res.entityKey,
+            ' ',
+          );
           if (onChange) onChange(newEditorState);
         },
       },
@@ -248,8 +256,15 @@ const BlockToolbar = (props) => {
         tooltip: '数学公式',
         component: <Icon name="formula" />,
         onClick() {
-          const res = createBlockEntity(editorState, 'FORMULA', 'MUTABLE', { initial: true, raw: '' });
-          const newEditorState = AtomicBlockUtils.insertAtomicBlock(res.editorState, res.entityKey, ' ');
+          const res = createBlockEntity(editorState, 'FORMULA', 'MUTABLE', {
+            initial: true,
+            raw: '',
+          });
+          const newEditorState = AtomicBlockUtils.insertAtomicBlock(
+            res.editorState,
+            res.entityKey,
+            ' ',
+          );
           if (onChange) onChange(newEditorState);
         },
       },

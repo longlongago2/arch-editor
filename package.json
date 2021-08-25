@@ -41,12 +41,12 @@
   "author": "longlongago2",
   "license": "MIT",
   "prettier": {
-    "printWidth": 110,
+    "printWidth": 100,
     "tabWidth": 2,
     "useTabs": false,
     "semi": true,
     "singleQuote": true,
-    "trailingComma": "es5",
+    "trailingComma": "all",
     "bracketSpacing": true,
     "jsxBracketSameLine": false,
     "arrowParens": "always"
@@ -73,11 +73,13 @@
     ],
     "rules": {
       "linebreak-style": "off",
+      "operator-linebreak": "off",
       "react/no-unused-state": "warn",
       "react/forbid-prop-types": "off",
       "react/require-default-props": "off",
       "react/jsx-filename-extension": "off",
       "react/jsx-props-no-spreading": "off",
+      "react/react-in-jsx-scope": "error",
       "import/no-extraneous-dependencies": "off",
       "jsx-a11y/click-events-have-key-events": "off",
       "jsx-a11y/no-noninteractive-element-interactions": "off",

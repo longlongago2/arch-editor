@@ -77,7 +77,10 @@ export default function AtomicFormula(props) {
     setModalOpen(false);
   }, []);
 
-  const handleMathError = useCallback((err) => <div className={styles.tipInfo}>{err.message}</div>, []);
+  const handleMathError = useCallback(
+    (err) => <div className={styles.tipInfo}>{err.message}</div>,
+    [],
+  );
 
   const handleInputChange = (e) => {
     setRaw(e.target.value);
