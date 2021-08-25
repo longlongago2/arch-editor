@@ -27,6 +27,11 @@ const defaultBars = [
   'formula',
 ];
 
+const unStyle = {
+  fontSize: 14,
+  marginRight: 5,
+};
+
 const headerStyle = {
   display: 'inline-block',
   lineHeight: 1,
@@ -36,10 +41,11 @@ const headerStyle = {
 
 const listStyle = {
   display: 'inline-block',
-  lineHeight: 1.2,
+  lineHeight: 1.7,
+  margin: 0,
+  padding: 0,
   marginLeft: 20,
   marginRight: 10,
-  padding: 0,
   fontSize: 14,
 };
 
@@ -83,7 +89,12 @@ const BlockToolbar = (props) => {
     () => [
       {
         name: 'UNSTYLED',
-        tooltip: '正文 Ctrl+Alt+T',
+        tooltip: (
+          <>
+            <span style={unStyle}>正文</span>
+            <span>Ctrl+Alt+T</span>
+          </>
+        ),
         component: <Icon name="text" />,
         onClick() {
           const temp = RichUtils.toggleBlockType(editorState, 'unstyled');
@@ -144,8 +155,8 @@ const BlockToolbar = (props) => {
         tooltip: (
           <>
             <ol style={listStyle}>
-              <li>-</li>
-              <li>-</li>
+              <li>🌞</li>
+              <li>🌛</li>
             </ol>
             <span>Ctrl+Alt+O</span>
           </>
@@ -163,8 +174,8 @@ const BlockToolbar = (props) => {
         tooltip: (
           <>
             <ul style={listStyle}>
-              <li>-</li>
-              <li>-</li>
+              <li>🌞</li>
+              <li>🌛</li>
             </ul>
             <span>Ctrl+Alt+U</span>
           </>
