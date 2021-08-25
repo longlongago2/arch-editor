@@ -25,7 +25,10 @@ function convertRowsFromRaw(rows) {
     key: r.key,
     columns: r.columns.map((c) => {
       const contentState = convertFromRaw(c.rawContentState);
-      const editorStateWithDecorator = EditorState.createWithContent(contentState, defaultDecorator);
+      const editorStateWithDecorator = EditorState.createWithContent(
+        contentState,
+        defaultDecorator,
+      );
       return {
         key: c.key,
         editorState: editorStateWithDecorator,
@@ -51,7 +54,16 @@ function convertRowsToRaw(rows) {
 // 尽量保证 set editorState 独立执行 https://draftjs.org/docs/advanced-topics-issues-and-pitfalls#delayed-state-updates
 export default function AtomicTable(props) {
   // props
-  const { block, data = {}, readOnly, editorState, setEditorState, editing, setEditing, Editor } = props;
+  const {
+    block,
+    data = {},
+    readOnly,
+    editorState,
+    setEditorState,
+    editing,
+    setEditing,
+    Editor,
+  } = props;
 
   // state
   const [rows, setRows] = useState([]);
@@ -72,7 +84,10 @@ export default function AtomicTable(props) {
   // handler
   const execSubmitAction = useCallback(() => {
     const nextRows = convertRowsToRaw(rows); // 转换成可存储的数据
-    const newEditorState = updateBlockEntityData(block, editorState, { rows: nextRows, initial: false });
+    const newEditorState = updateBlockEntityData(block, editorState, {
+      rows: nextRows,
+      initial: false,
+    });
     setEditorState(newEditorState);
   }, [block, editorState, rows, setEditorState]);
 
@@ -165,8 +180,8 @@ export default function AtomicTable(props) {
       <tbody>
         {editing && (
           <tr className={styles.columnBar}>
-            {rows[0]
-              && rows[0].columns.map(({ key }) => (
+            {rows[0] &&
+              rows[0].columns.map(({ key }) => (
                 <Tooltip content={toolbarColumn} key={key}>
                   <td />
                 </Tooltip>

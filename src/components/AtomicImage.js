@@ -44,7 +44,10 @@ export default function AtomicImage(props) {
 
   // handler
   const execSubmitAction = useCallback(() => {
-    const newEditorState = updateBlockEntityData(block, editorState, { ...imageObj, initial: false });
+    const newEditorState = updateBlockEntityData(block, editorState, {
+      ...imageObj,
+      initial: false,
+    });
     setEditorState(newEditorState);
   }, [block, editorState, imageObj, setEditorState]);
 
