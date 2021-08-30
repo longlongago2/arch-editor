@@ -1,7 +1,17 @@
 /* eslint-disable no-console */
+import { saveAs } from 'file-saver';
 import React, { useRef, useState, useCallback, useMemo } from 'react';
 // dev
-import { ArchEditor, BlockToolbar, Icon, defaultEditorState, ArchEditorProvider } from './src';
+import {
+  ArchEditor,
+  BlockToolbar,
+  Icon,
+  defaultEditorState,
+  ArchEditorProvider,
+  convertFromHTML,
+  ContentState,
+  EditorState,
+} from './src';
 // prod
 // import { ArchEditor, BlockToolbar, Icon, defaultEditorState, ArchEditorProvider } from './lib';
 // import './dist/arch-editor.css';
@@ -14,11 +24,38 @@ function App() {
   // ref
   const editor = useRef(null);
 
+  const fileData = useRef(null);
+
   // handler
   const handleGetRawData = () => {
     if (editor.current) {
       const data = editor.current.getEditorRaw();
-      console.log(data);
+      const json = JSON.stringify(data);
+      const blob = new Blob([json], { type: 'text/plain;charset=utf-8' });
+      saveAs(blob, 'arch-editor.json');
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsText(file, 'utf-8');
+      reader.onload = (evt) => {
+        fileData.current = evt.target.result;
+      };
+    }
+  };
+
+  const handleLoadHTMLData = () => {
+    if (fileData.current) {
+      const blocksFromHTML = convertFromHTML(fileData.current);
+      const contentState = ContentState.createFromBlockArray(
+        blocksFromHTML.contentBlocks,
+        blocksFromHTML.entityMap,
+      );
+      const newEditorState = EditorState.push(editorState, contentState, 'insert-fragment');
+      setEditorState(newEditorState);
     }
   };
 
@@ -48,8 +85,12 @@ function App() {
     <div className={styles.app}>
       <h1>use prop editorState</h1>
       <div className={styles.buttonGroup}>
+        <input type="file" accept="text/html" onChange={handleFileChange} />
+        <button type="button" onClick={handleLoadHTMLData}>
+          载入 HTML 数据
+        </button>
         <button type="button" onClick={handleGetRawData}>
-          获取raw数据
+          下载 JSON 数据
         </button>
       </div>
       <BlockToolbar
