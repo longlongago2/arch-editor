@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
@@ -65,15 +65,26 @@ export default function AtomicTable(props) {
     Editor,
   } = props;
 
+  // ref
+  const atomicTable = useRef(null);
+
   // state
   const [rows, setRows] = useState([]);
 
   // effect
   useEffect(() => {
     // initial state: 初次创建处于编辑状态
+    let timer;
     if (data.initial) {
-      setEditing(true);
+      setEditing(true, () => {
+        timer = setTimeout(() => {
+          if (atomicTable.current) atomicTable.current.scrollIntoView();
+        }, 0);
+      });
     }
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
   }, [data, setEditing]);
 
   useEffect(() => {
@@ -218,7 +229,7 @@ export default function AtomicTable(props) {
 
   if (editing) {
     return (
-      <div className={styles.atomicTable}>
+      <div className={styles.atomicTable} ref={atomicTable}>
         {core}
         <EditToolbar
           className={styles.editToolbar}
