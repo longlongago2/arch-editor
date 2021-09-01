@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
+import { v4 as uuid } from 'uuid';
 import { updateBlockEntityData, removeBlockEntity } from '@/utils/draftUtils';
 import { defaultDecorator } from '@/utils/default';
 import { useToolbar, EditToolbar } from '@/utils/atomic';
@@ -51,6 +52,9 @@ function convertRowsToRaw(rows) {
   }));
 }
 
+const defaultContentState = EditorState.createEmpty().getCurrentContent();
+const defaultEditorState = EditorState.createWithContent(defaultContentState, defaultDecorator);
+
 // 尽量保证 set editorState 独立执行 https://draftjs.org/docs/advanced-topics-issues-and-pitfalls#delayed-state-updates
 export default function AtomicTable(props) {
   // props
@@ -65,15 +69,26 @@ export default function AtomicTable(props) {
     Editor,
   } = props;
 
+  // ref
+  const atomicTable = useRef(null);
+
   // state
   const [rows, setRows] = useState([]);
 
   // effect
   useEffect(() => {
     // initial state: 初次创建处于编辑状态
+    let timer;
     if (data.initial) {
-      setEditing(true);
+      setEditing(true, () => {
+        timer = setTimeout(() => {
+          if (atomicTable.current) atomicTable.current.scrollIntoView();
+        }, 0);
+      });
     }
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
   }, [data, setEditing]);
 
   useEffect(() => {
@@ -131,42 +146,115 @@ export default function AtomicTable(props) {
     execRemoveAction();
   }, [editing, execRemoveAction, setEditing]);
 
-  const toolbarColumn = useMemo(
-    () => (
-      <span className={`${styles2.popoverButtonGroup} ${styles2.large}`}>
-        <button type="button" className={styles2.popoverButton}>
-          <Icon name="insert-column-left" />
-        </button>
-        <span className={styles2.popoverDivider} />
-        <button type="button" className={styles2.popoverButton}>
-          <Icon name="insert-column-right" />
-        </button>
-        <span className={styles2.popoverDivider} />
-        <button type="button" className={styles2.popoverButton}>
-          <Icon name="delete-column" />
-        </button>
-      </span>
-    ),
-    [],
+  const insertColumn = (index) => {
+    setRows((v) => v.map((item) => {
+      const { columns } = item;
+      const newcol = columns.concat();
+      newcol.splice(index, 0, {
+        key: uuid(),
+        editorState: defaultEditorState,
+      });
+      return { ...item, columns: newcol };
+    }));
+  };
+
+  const handleInsertColLeft = (i) => {
+    insertColumn(i);
+  };
+
+  const handleInsertColRight = (i) => {
+    insertColumn(i + 1);
+  };
+
+  const handleDeleteCol = (i) => {
+    setRows((v) => v.map((item) => ({
+      ...item,
+      columns: item.columns.filter((p, index) => index !== i),
+    })));
+  };
+
+  const toolbarColumn = (i) => (
+    <span className={`${styles2.popoverButtonGroup} ${styles2.large}`}>
+      <button
+        type="button"
+        className={styles2.popoverButton}
+        onClick={() => handleInsertColLeft(i)}
+      >
+        <Icon name="insert-column-left" />
+      </button>
+      <span className={styles2.popoverDivider} />
+      <button
+        type="button"
+        className={styles2.popoverButton}
+        onClick={() => handleInsertColRight(i)}
+      >
+        <Icon name="insert-column-right" />
+      </button>
+      {rows[0].columns.length > 1 && (
+        <>
+          <span className={styles2.popoverDivider} />
+          <button
+            type="button"
+            className={styles2.popoverButton}
+            onClick={() => handleDeleteCol(i)}
+          >
+            <Icon name="delete-column" />
+          </button>
+        </>
+      )}
+    </span>
   );
 
-  const toolbarRow = useMemo(
-    () => (
-      <span className={`${styles2.popoverButtonGroup} ${styles2.large}`}>
-        <button type="button" className={styles2.popoverButton}>
-          <Icon name="insert-row-above" />
-        </button>
-        <span className={styles2.popoverDivider} />
-        <button type="button" className={styles2.popoverButton}>
-          <Icon name="insert-row-below" />
-        </button>
-        <span className={styles2.popoverDivider} />
-        <button type="button" className={styles2.popoverButton}>
-          <Icon name="delete-row" />
-        </button>
-      </span>
-    ),
-    [],
+  const insertRow = (index) => {
+    const columnTemp = rows[0].columns;
+    setRows((v) => {
+      const newRow = {
+        key: uuid(),
+        columns: columnTemp.map(() => ({
+          key: uuid(),
+          editorState: defaultEditorState,
+        })),
+      };
+      const next = v.concat();
+      next.splice(index, 0, newRow);
+      return next;
+    });
+  };
+
+  const handleInsertRowAbove = (i) => {
+    insertRow(i);
+  };
+
+  const handleInsertRowBelow = (i) => {
+    insertRow(i + 1);
+  };
+
+  const handleDeleteRow = (i) => {
+    setRows((v) => v.filter((p, index) => index !== i));
+  };
+
+  const toolbarRow = (i) => (
+    <span className={`${styles2.popoverButtonGroup} ${styles2.large}`}>
+      <button
+        type="button"
+        className={styles2.popoverButton}
+        onClick={() => handleInsertRowAbove(i)}
+      >
+        <Icon name="insert-row-above" />
+      </button>
+      <span className={styles2.popoverDivider} />
+      <button
+        type="button"
+        className={styles2.popoverButton}
+        onClick={() => handleInsertRowBelow(i)}
+      >
+        <Icon name="insert-row-below" />
+      </button>
+      <span className={styles2.popoverDivider} />
+      <button type="button" className={styles2.popoverButton} onClick={() => handleDeleteRow(i)}>
+        <Icon name="delete-row" />
+      </button>
+    </span>
   );
 
   const toolbarEdit = useToolbar({
@@ -181,8 +269,8 @@ export default function AtomicTable(props) {
         {editing && (
           <tr className={styles.columnBar}>
             {rows[0] &&
-              rows[0].columns.map(({ key }) => (
-                <Tooltip content={toolbarColumn} key={key}>
+              rows[0].columns.map(({ key }, i) => (
+                <Tooltip content={toolbarColumn(i)} key={key}>
                   <td />
                 </Tooltip>
               ))}
@@ -202,7 +290,7 @@ export default function AtomicTable(props) {
               </td>
             ))}
             {editing && (
-              <Tooltip content={toolbarRow} placement="right">
+              <Tooltip content={toolbarRow(i)} placement="right">
                 <td className={styles.rowBar} />
               </Tooltip>
             )}
@@ -218,7 +306,7 @@ export default function AtomicTable(props) {
 
   if (editing) {
     return (
-      <div className={styles.atomicTable}>
+      <div className={styles.atomicTable} ref={atomicTable}>
         {core}
         <EditToolbar
           className={styles.editToolbar}

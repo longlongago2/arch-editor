@@ -19,6 +19,7 @@ export default function AtomicFormula(props) {
 
   // ref
   const inputRef = useRef(null);
+  const atomicFormula = useRef(null);
 
   // state
   const [raw, setRaw] = useState('');
@@ -27,9 +28,17 @@ export default function AtomicFormula(props) {
   // effect
   useEffect(() => {
     // initial status
+    let timer;
     if (data.initial) {
-      setEditing(true);
+      setEditing(true, () => {
+        timer = setTimeout(() => {
+          if (atomicFormula.current) atomicFormula.current.scrollIntoView();
+        }, 0);
+      });
     }
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
   }, [data, setEditing]);
 
   useEffect(() => {
@@ -119,7 +128,7 @@ export default function AtomicFormula(props) {
 
   if (editing) {
     return (
-      <div className={styles.formulaContainer}>
+      <div className={styles.formulaContainer} ref={atomicFormula}>
         <div className={cx('formula', { active: editing })}>
           {core}
           <textarea

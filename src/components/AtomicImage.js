@@ -24,6 +24,7 @@ export default function AtomicImage(props) {
   // ref
   const fileRef = useRef(null);
   const snapshot = useRef(null);
+  const atomicImage = useRef(null);
 
   // state
   const [imageObj, setImageObj] = useState({});
@@ -31,9 +32,19 @@ export default function AtomicImage(props) {
   // effect
   useEffect(() => {
     // initial state: 初次创建处于编辑状态
+    let timer;
     if (data.initial) {
-      setEditing(true);
+      setEditing(true, () => {
+        timer = setTimeout(() => {
+          if (atomicImage.current) {
+            atomicImage.current.scrollIntoView();
+          }
+        }, 0);
+      });
     }
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
   }, [data, setEditing]);
 
   useEffect(() => {
@@ -132,7 +143,7 @@ export default function AtomicImage(props) {
 
   if (editing) {
     return (
-      <div className={styles.atomicImageContainer}>
+      <div className={styles.atomicImageContainer} ref={atomicImage}>
         <div className={cx('atomicImage', 'active')}>
           {core}
           <div className={styles.imageToolbar}>
