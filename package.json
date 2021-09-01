@@ -1,6 +1,6 @@
 {
   "name": "arch-editor",
-  "version": "1.0.1-beta.2",
+  "version": "1.0.1-beta.3",
   "description": "Rich text editor with a high degree of customization.",
   "main": "lib/index.js",
   "unpkg": "dist/arch-editor.js",
