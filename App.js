@@ -13,8 +13,18 @@ import {
   EditorState,
 } from './src';
 // prod
-// import { ArchEditor, BlockToolbar, Icon, defaultEditorState, ArchEditorProvider } from './lib';
+// import {
+//   ArchEditor,
+//   BlockToolbar,
+//   Icon,
+//   defaultEditorState,
+//   ArchEditorProvider,
+//   convertFromHTML,
+//   ContentState,
+//   EditorState,
+// } from './lib';
 // import './dist/arch-editor.css';
+
 import styles from './App.less';
 
 function App() {
@@ -119,7 +129,11 @@ function App() {
         />
       </ArchEditorProvider>
       <h1>use inner editorState</h1>
-      <ArchEditor className={styles.editor} popoverClassName={styles.popover} placeholder="请输入文本" />
+      <ArchEditor
+        className={styles.editor}
+        popoverClassName={styles.popover}
+        placeholder="请输入文本"
+      />
     </div>
   );
 }

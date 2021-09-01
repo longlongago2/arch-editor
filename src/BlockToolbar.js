@@ -9,6 +9,7 @@ import { createBlockEntity, takeSelectionFocus } from '@/utils/draftUtils';
 import { ArchEditorContext } from '@/Provider';
 import Icon from '@/components/Icon';
 import Tooltip from '@/components/Tooltip';
+import CellSelector from '@/components/CellSelector';
 import styles from './BlockToolbar.less';
 
 const cx = classNames.bind(styles);
@@ -75,6 +76,33 @@ const BlockToolbar = (props) => {
   }, [contextEditorState, propEditorState, setPropEditorState, setContextEditorState]);
 
   const onChange = useMemo(() => computedOnChange(), [computedOnChange]);
+
+  // handler
+  const handleCreateTable = useCallback(
+    (pos) => {
+      const [i, j] = pos;
+      const defaultContentState = EditorState.createEmpty().getCurrentContent();
+      const defaultRawContentState = convertToRaw(defaultContentState);
+      const rows = new Array(i).fill().map(() => ({
+        key: uuid(),
+        columns: new Array(j).fill().map(() => ({
+          key: uuid(),
+          rawContentState: defaultRawContentState,
+        })),
+      }));
+      const res = createBlockEntity(editorState, 'TABLE', 'MUTABLE', {
+        initial: true,
+        rows,
+      });
+      const newEditorState = AtomicBlockUtils.insertAtomicBlock(
+        res.editorState,
+        res.entityKey,
+        ' ',
+      );
+      if (onChange) onChange(newEditorState);
+    },
+    [editorState, onChange],
+  );
 
   // memorized
   const computedBars = useCallback((_bars) => {
@@ -211,56 +239,7 @@ const BlockToolbar = (props) => {
       {
         name: 'TABLE',
         tooltip: '表格',
-        component: <Icon name="table" />,
-        onClick() {
-          const defaultContentState = EditorState.createEmpty().getCurrentContent();
-          const defaultRawContentState = convertToRaw(defaultContentState);
-          const res = createBlockEntity(editorState, 'TABLE', 'MUTABLE', {
-            initial: true,
-            rows: [
-              {
-                key: uuid(),
-                columns: [
-                  {
-                    key: uuid(),
-                    rawContentState: defaultRawContentState,
-                  },
-                  {
-                    key: uuid(),
-                    rawContentState: defaultRawContentState,
-                  },
-                  {
-                    key: uuid(),
-                    rawContentState: defaultRawContentState,
-                  },
-                ],
-              },
-              {
-                key: uuid(),
-                columns: [
-                  {
-                    key: uuid(),
-                    rawContentState: defaultRawContentState,
-                  },
-                  {
-                    key: uuid(),
-                    rawContentState: defaultRawContentState,
-                  },
-                  {
-                    key: uuid(),
-                    rawContentState: defaultRawContentState,
-                  },
-                ],
-              },
-            ],
-          });
-          const newEditorState = AtomicBlockUtils.insertAtomicBlock(
-            res.editorState,
-            res.entityKey,
-            ' ',
-          );
-          if (onChange) onChange(newEditorState);
-        },
+        component: <CellSelector rows={10} cols={10} onSelect={handleCreateTable} />,
       },
       {
         name: 'FORMULA',
@@ -281,7 +260,7 @@ const BlockToolbar = (props) => {
       },
       ...extraBarMaps,
     ],
-    [editorState, extraBarMaps, onChange],
+    [editorState, extraBarMaps, handleCreateTable, onChange],
   );
 
   const computedBarMaps = useCallback(
