@@ -38,6 +38,7 @@ const headerStyle = {
   lineHeight: 1,
   margin: 0,
   padding: 5,
+  color: '#fff',
 };
 
 const listStyle = {

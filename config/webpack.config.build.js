@@ -103,7 +103,7 @@ for (const [key, value] of Object.entries(srcFileMap)) {
 }
 
 const webpackConfigBuildLib = {
-  mode: 'development',
+  mode: 'production',
   entry: { ...entryPoints },
   output: {
     path: paths.libBuild,

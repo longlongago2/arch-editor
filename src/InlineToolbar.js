@@ -11,8 +11,17 @@ import styles from './InlineToolbar.less';
 
 const cx = classNames.bind(styles);
 
-const defaultBars = ['bold', 'italic', 'underline', 'strikethrough', 'link', 'formatclear', 'delete'];
+const defaultBars = [
+  'bold',
+  'italic',
+  'underline',
+  'strikethrough',
+  'link',
+  'formatclear',
+  'delete',
+];
 
+// Native Toolbar
 const ToolbarNative = (props) => {
   const {
     virtualElement,
@@ -231,8 +240,18 @@ const ToolbarNative = (props) => {
             </ul>
           )}
           {boxMode === 'link' && (
-            <div className={styles.linkContent} role="textbox" tabIndex="0" onClick={handleDelegationClick}>
-              <button type="button" className={styles.button} onClick={handleBackToNormal} title="返回">
+            <div
+              className={styles.linkContent}
+              role="textbox"
+              tabIndex="0"
+              onClick={handleDelegationClick}
+            >
+              <button
+                type="button"
+                className={styles.button}
+                onClick={handleBackToNormal}
+                title="返回"
+              >
                 <Icon name="arrow-backward" />
               </button>
               <input
@@ -244,7 +263,12 @@ const ToolbarNative = (props) => {
                 onChange={handleUrlChange}
               />
               {urlPass && (
-                <button type="button" className={styles.button} onClick={handleApplyLink} title="确定">
+                <button
+                  type="button"
+                  className={styles.button}
+                  onClick={handleApplyLink}
+                  title="确定"
+                >
                   <Icon name="done" />
                 </button>
               )}
@@ -258,6 +282,17 @@ const ToolbarNative = (props) => {
   );
 };
 
+ToolbarNative.propTypes = {
+  virtualElement: PropTypes.object,
+  editorState: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
+  boxModeChange: PropTypes.func,
+  bars: PropTypes.arrayOf(PropTypes.string),
+  popoverClassName: PropTypes.string,
+  getUpdateFn: PropTypes.func,
+};
+
+// Inline Toolbar
 const InlineToolbar = memo((props) => {
   const { visible, onRequestClose, ...rest } = props;
 

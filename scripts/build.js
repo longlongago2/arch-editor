@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const process = require('process');
 const fs = require('fs-extra');
 const chalk = require('react-dev-utils/chalk');
-const { checkBrowsers } = require('react-dev-utils/browsersHelper');
 const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
 const printBuildError = require('react-dev-utils/printBuildError');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
@@ -13,7 +12,7 @@ const { measureFileSizesBeforeBuild, printFileSizesAfterBuild } = FileSizeReport
 
 const { webpackConfigBuildDist, webpackConfigBuildLib } = config;
 
-const isInteractive = process.stdout.isTTY;
+const { log } = console;
 
 // These sizes are pretty large. We'll warn for bundles exceeding them.
 const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024;
@@ -42,7 +41,9 @@ function build(webpackConfig, previousFileSizes) {
           warnings: [],
         });
       } else {
-        messages = formatWebpackMessages(stats.toJson({ all: false, warnings: true, errors: true }));
+        messages = formatWebpackMessages(
+          stats.toJson({ all: false, warnings: true, errors: true }),
+        );
       }
       if (messages.errors.length) {
         // Only keep the first error. Others are often indicative
@@ -53,14 +54,14 @@ function build(webpackConfig, previousFileSizes) {
         return reject(new Error(messages.errors.join('\n\n')));
       }
       if (
-        process.env.CI
-        && (typeof process.env.CI !== 'string' || process.env.CI.toLowerCase() !== 'false')
-        && messages.warnings.length
+        process.env.CI &&
+        (typeof process.env.CI !== 'string' || process.env.CI.toLowerCase() !== 'false') &&
+        messages.warnings.length
       ) {
-        console.log(
+        log(
           chalk.yellow(
-            '\nTreating warnings as errors because process.env.CI = true.\n'
-              + 'Most CI servers set it automatically.\n',
+            '\nTreating warnings as errors because process.env.CI = true.\n' +
+              'Most CI servers set it automatically.\n',
           ),
         );
         return reject(new Error(messages.warnings.join('\n\n')));
@@ -77,17 +78,19 @@ function build(webpackConfig, previousFileSizes) {
 
 function buildResult({ stats, previousFileSizes, warnings, buildFolder }) {
   if (warnings.length) {
-    console.log(chalk.yellow('Compiled with warnings.\n'));
-    console.log(warnings.join('\n\n'));
-    console.log(
-      `\nSearch for the ${chalk.underline(chalk.yellow('keywords'))} to learn more about each warning.`,
+    log(chalk.yellow('Compiled with warnings.\n'));
+    log(warnings.join('\n\n'));
+    log(
+      `\nSearch for the ${chalk.underline(
+        chalk.yellow('keywords'),
+      )} to learn more about each warning.`,
     );
-    console.log(`To ignore, add ${chalk.cyan('// eslint-disable-next-line')} to the line before.\n`);
+    log(`To ignore, add ${chalk.cyan('// eslint-disable-next-line')} to the line before.\n`);
   } else {
-    console.log(chalk.green('Compiled successfully.\n'));
+    log(chalk.green('Compiled successfully.\n'));
   }
 
-  console.log('File sizes after gzip:\n');
+  log('File sizes after gzip:\n');
   printFileSizesAfterBuild(
     stats,
     previousFileSizes,
@@ -97,14 +100,12 @@ function buildResult({ stats, previousFileSizes, warnings, buildFolder }) {
   );
 }
 
-console.log(chalk.blue('Creating a webpack build...\n'));
+log(chalk.blue('Creating a webpack build...\n'));
 
-checkBrowsers(paths.root, isInteractive)
-  // First: build lib
-  .then(() => measureFileSizesBeforeBuild(paths.libBuild))
+measureFileSizesBeforeBuild(paths.libBuild)
   .then((previousFileSizes) => {
     fs.emptyDirSync(paths.libBuild); // webpack 5 自身 clean 会失效
-    console.log(chalk.green('\n--- Start building library ---\n'));
+    log(chalk.green('\n--- Start building library ---\n'));
     return build(webpackConfigBuildLib, previousFileSizes);
   })
   .then(
@@ -118,7 +119,7 @@ checkBrowsers(paths.root, isInteractive)
       return Promise.resolve('handled'); // 继续执行下一步
     },
     (err) => {
-      console.log(chalk.red('Failed to compile.\n'));
+      log(chalk.red('Failed to compile.\n'));
       printBuildError(err);
       process.exit(1);
     },
@@ -127,7 +128,7 @@ checkBrowsers(paths.root, isInteractive)
   .then(() => measureFileSizesBeforeBuild(paths.distBuild))
   .then((previousFileSizes) => {
     fs.emptyDirSync(paths.distBuild);
-    console.log(chalk.green('\n--- Start building dist ---\n'));
+    log(chalk.green('\n--- Start building dist ---\n'));
     return build(webpackConfigBuildDist, previousFileSizes);
   })
   .then(
@@ -140,14 +141,14 @@ checkBrowsers(paths.root, isInteractive)
       });
     },
     (err) => {
-      console.log(chalk.red('Failed to compile.\n'));
+      log(chalk.red('Failed to compile.\n'));
       printBuildError(err);
       process.exit(1);
     },
   )
   .catch((err) => {
     if (err && err.message) {
-      console.log(err.message);
+      log(err.message);
     }
     process.exit(1);
   });
